@@ -13,7 +13,7 @@ display = []
 chosen_word = random.choice(word_list)
 for letter in chosen_word:
     display.append("_")
-print(chosen_word)
+#print(chosen_word)
 end_of_game = False
 while not end_of_game:
     guess = input("Guess a letter:").lower()
