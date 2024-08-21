@@ -24,6 +24,7 @@ class Snake:
         t.color("white")
         t.shape("square")
         t.penup()
+        t.speed("slow")
         t.goto(i)
         self.snakes.append(t)
 

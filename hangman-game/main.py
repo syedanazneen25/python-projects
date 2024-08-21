@@ -29,6 +29,7 @@ while not end_of_game:
         if lives == 0:
             end_of_game = True
             print("You're out of lives...")
+            print(f"The word is {chosen_word}.")
             print("You lose!")
     print(f"{' '.join(display)}")
     print(stages[lives])
