@@ -28,6 +28,12 @@ class Snake:
         t.goto(i)
         self.snakes.append(t)
 
+    def reset(self):
+        for snake in self.snakes:
+            snake.goto(1000, 1000)
+        self.snakes.clear()
+        self.create_snake()
+        self.head = self.snakes[0]
     def extend(self):
         self.add_snake(self.snakes[-1].position())
 
