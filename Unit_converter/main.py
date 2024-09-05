@@ -1,10 +1,10 @@
 from tkinter import *
-
+from tkinter import messagebox
 def calculate():
     try:
         user_input = float(input.get())
     except ValueError:
-        label_4.config(text="Invalid Input")
+        messagebox.showerror(title="Oops", message="Invalid Input")
         return
     conversion_type = conversion_var.get()
     if conversion_type == "Miles to Km":
