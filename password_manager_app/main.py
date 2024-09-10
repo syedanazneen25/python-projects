@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import messagebox
 import pyperclip 
+import json
 # ---------------------------- PASSWORD GENERATOR ------------------------------- #
 import random
 def gen_password():
@@ -22,16 +23,46 @@ def save():
     website = website_entry.get()
     email = email_entry.get()
     password = password_entry.get()
+    new_data = {
+        website:{
+            "email": email,
+            "password": password,
+        }
+    }
     if len(website) == 0 or len(password) == 0:
         messagebox.showerror(title="Oops!!", message="Please don't leave empty fields.")
     else:
         save_data = messagebox.askokcancel(title=website, message=f"These are the details entered:\n Email: {email}\n Password: {password}\n Is it okay to save?")
         if save_data:
-            with open("data.txt", "a") as data_file:
-                data_file.write(f"{website} | {email} | {password}\n")
-                website_entry.delete(0, END)
-                password_entry.delete(0, END)
-        
+            try:
+                with open("data.json", "r") as data_file:
+                    data = json.load(data_file)
+            except FileNotFoundError:
+                with open("data.json", "w") as data_file:
+                    json.dump(new_data, data_file, indent=4)        
+            else:
+                data.update(new_data)
+                with open("data.json", "w") as data_file:
+                    json.dump(new_data, data_file, indent=4)
+            finally:
+                    website_entry.delete(0, END)
+                    password_entry.delete(0, END)
+
+
+def find_password():
+    user_text = website_entry.get()
+    try:
+        with open("data.json") as data_file:
+            data = json.load(data_file)
+    except FileNotFoundError:
+        messagebox.showerror(title="Error", message="Data not found.")
+    else:
+        if user_text in data:
+            email = data[user_text]["email"]
+            password = data[user_text]["password"]
+            messagebox.showinfo(title=user_text, message=f"Email: {email}\n Password: {password}")
+        else:
+            messagebox.showerror(title="Error", message=f"No details for {user_text} exists.")
 # ---------------------------- UI SETUP ------------------------------- #
 
 window = Tk()
@@ -43,8 +74,8 @@ canvas.create_image(100, 100, image=pass_img)
 canvas.grid(row=0, column=1)
 website_label = Label(text="Website:")
 website_label.grid(row=1, column=0)
-website_entry = Entry(width=35)
-website_entry.grid(row=1, column=1, columnspan=2)
+website_entry = Entry(width=21)
+website_entry.grid(row=1, column=1)
 website_entry.focus()
 email_label = Label(text="Email/Username:")
 email_label.grid(row=2, column=0)
@@ -59,7 +90,8 @@ pass_gen = Button(text="Generate Password", command=gen_password)
 pass_gen.grid(row=3, column=2)
 add_button = Button(text="Add", width=36, command=save)
 add_button.grid(row=4, column=1, columnspan=2)
-
+search_button = Button(text="Search", command=find_password, width=13)
+search_button.grid(row=1, column=2)
 
 
 
