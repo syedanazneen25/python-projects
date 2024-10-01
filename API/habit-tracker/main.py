@@ -1,7 +1,7 @@
 import requests
 from datetime import datetime, timedelta
-USERNAME = "snazneen"
-TOKEN = "abc8934jgjhnbo"
+USERNAME = "username"
+TOKEN = "abcxxxxxxxxxxx"
 GRAPHID = "ht1"
 pixela_endpoint = "https://pixe.la/v1/users"
 current_date = (datetime.now()).strftime('%Y%m%d')
